@@ -66,27 +66,7 @@ function saveStations(stations) {
     localStorage.setItem(STORAGE_KEYS.STATIONS, JSON.stringify(stations));
 }
 
-// Login functionality
-document.getElementById('loginForm')?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-
-    // Simple demo authentication
-    if (username === 'admin' && password === 'admin') {
-        localStorage.setItem(STORAGE_KEYS.USER, username);
-        document.getElementById('userName').textContent = username;
-        showDashboard();
-    } else {
-        alert('Invalid credentials. Please use: admin / admin');
-    }
-});
-
-// Logout functionality
-document.getElementById('logoutBtn')?.addEventListener('click', () => {
-    localStorage.removeItem(STORAGE_KEYS.USER);
-    showLogin();
-});
+// Login and Logout functionality will be initialized in DOMContentLoaded
 
 // Page navigation
 function showLogin() {
@@ -213,9 +193,13 @@ function navigateToPage(pageName) {
     }
 }
 
-// Check if user is logged in on page load
+// Initialize everything when DOM is ready
 window.addEventListener('DOMContentLoaded', () => {
     initializeData();
+    
+    // Initialize event listeners
+    initializeEventListeners();
+    
     const user = localStorage.getItem(STORAGE_KEYS.USER);
     if (user) {
         document.getElementById('userName').textContent = user;
@@ -227,6 +211,34 @@ window.addEventListener('DOMContentLoaded', () => {
         showLogin();
     }
 });
+
+// Initialize all event listeners
+function initializeEventListeners() {
+    // Login functionality
+    document.getElementById('loginForm')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        // Simple demo authentication
+        if (username === 'admin' && password === 'admin') {
+            localStorage.setItem(STORAGE_KEYS.USER, username);
+            document.getElementById('userName').textContent = username;
+            document.getElementById('userNameSidebar').textContent = username;
+            document.getElementById('profileUserName').textContent = username;
+            showDashboard();
+            initSidebar();
+        } else {
+            alert('Invalid credentials. Please use: admin / admin');
+        }
+    });
+
+    // Logout functionality
+    document.getElementById('logoutBtn')?.addEventListener('click', () => {
+        localStorage.removeItem(STORAGE_KEYS.USER);
+        showLogin();
+    });
+}
 
 // ============================================
 // MACHINES / PRODUCT COUNTS FUNCTIONALITY
