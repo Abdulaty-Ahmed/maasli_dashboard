@@ -121,11 +121,25 @@ function initSidebar() {
         menuToggle.classList.add('active');
     }
     
-    // Menu toggle button
-    menuToggle?.addEventListener('click', toggleSidebar);
+    // Menu toggle button - support both click and touch events for mobile
+    if (menuToggle) {
+        menuToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleSidebar();
+        });
+        // Add touch support for mobile devices
+        menuToggle.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            toggleSidebar();
+        }, { passive: false });
+    }
     
-    // Close sidebar when clicking overlay
-    overlay?.addEventListener('click', toggleSidebar);
+    // Close sidebar when clicking/touching overlay
+    if (overlay) {
+        overlay.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('touchstart', toggleSidebar, { passive: true });
+    }
     
     // Navigation items
     const navItems = document.querySelectorAll('.nav-item');
