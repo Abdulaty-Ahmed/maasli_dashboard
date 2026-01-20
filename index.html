@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maasli - Smart Manufacturing Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="page active">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="logo-container">
+                    <div class="logo-icon">M</div>
+                    <h1 class="company-name">Maasli</h1>
+                    <p class="tagline">Smart Manufacturing Intelligence</p>
+                </div>
+                
+                <form id="loginForm" class="login-form">
+                    <div class="input-group">
+                        <input type="text" id="username" placeholder="Username" required>
+                        <span class="input-icon">👤</span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="password" id="password" placeholder="Password" required>
+                        <span class="input-icon">🔒</span>
+                    </div>
+                    
+                    <button type="submit" class="login-btn">
+                        <span>Access Dashboard</span>
+                        <span class="btn-arrow">→</span>
+                    </button>
+                </form>
+                
+                <p class="demo-hint">Demo credentials: admin / admin</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboardPage" class="page">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-icon-sidebar">M</div>
+                <h3 class="sidebar-title">Maasli</h3>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-page="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-page="statistics">
+                    <span class="nav-icon">📈</span>
+                    <span class="nav-text">Statistics</span>
+                </a>
+                <a href="#" class="nav-item" data-page="products">
+                    <span class="nav-icon">📦</span>
+                    <span class="nav-text">Products</span>
+                </a>
+                <a href="#" class="nav-item" data-page="profile">
+                    <span class="nav-icon">👤</span>
+                    <span class="nav-text">Profile</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">👤</div>
+                    <div class="user-details">
+                        <div class="user-name-sidebar" id="userNameSidebar">Admin</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- Main Container -->
+        <div class="main-container">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <h2 id="pageTitle">Dashboard</h2>
+                </div>
+                <div class="header-right">
+                    <span class="user-name" id="userName">Admin User</span>
+                    <button class="logout-btn" id="logoutBtn">Logout</button>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="dashboard-content" id="mainContent">
+                
+                <!-- Dashboard View -->
+                <div class="content-view active" id="dashboardView">
+            <!-- Product Counts Section -->
+            <section class="dashboard-section">
+                <div class="section-header">
+                    <h3>📊 Product Counts by Machine</h3>
+                    <button class="add-btn" id="addMachineBtn">+ Add Machine</button>
+                </div>
+                
+                <div class="cards-grid" id="machinesGrid">
+                    <!-- Machine cards will be dynamically inserted here -->
+                </div>
+
+                <div class="totals-section">
+                    <h4>Product Totals</h4>
+                    <div class="totals-grid" id="productTotals">
+                        <!-- Product totals will be dynamically inserted here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Employee Stats Section -->
+            <section class="dashboard-section">
+                <div class="section-header">
+                    <h3>👥 Employee Statistics by Station</h3>
+                    <button class="add-btn" id="addStationBtn">+ Add Station</button>
+                </div>
+                
+                <div class="stations-container" id="stationsContainer">
+                    <!-- Station cards will be dynamically inserted here -->
+                </div>
+            </section>
+                </div>
+                <!-- End Dashboard View -->
+
+                <!-- Statistics View -->
+                <div class="content-view" id="statisticsView">
+                    <div class="stats-header">
+                        <h2>Product Statistics</h2>
+                        <div class="time-period-tabs">
+                            <button class="period-tab active" data-period="daily">Daily</button>
+                            <button class="period-tab" data-period="weekly">Weekly</button>
+                            <button class="period-tab" data-period="monthly">Monthly</button>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <!-- Product statistics cards will be dynamically generated here -->
+                        <div id="productStatsContainer"></div>
+                    </div>
+
+                    <div class="chart-section">
+                        <div class="chart-card">
+                            <h3>Production Trends</h3>
+                            <canvas id="productionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Statistics View -->
+
+                <!-- Products View -->
+                <div class="content-view" id="productsView">
+                    <div class="section-header">
+                        <h2>Product Management</h2>
+                        <button class="add-btn" id="addProductTypeBtn">+ Add Product Type</button>
+                    </div>
+                    <div class="products-list" id="productsList">
+                        <!-- Product types will be listed here -->
+                    </div>
+                </div>
+                <!-- End Products View -->
+
+                <!-- Profile View -->
+                <div class="content-view" id="profileView">
+                    <div class="profile-container">
+                        <div class="profile-card">
+                            <div class="profile-avatar">
+                                <div class="avatar-circle">👤</div>
+                            </div>
+                            <h2 id="profileUserName">Admin User</h2>
+                            <p class="profile-role">Administrator</p>
+                            
+                            <div class="profile-info">
+                                <div class="info-item">
+                                    <label>Username</label>
+                                    <input type="text" id="profileUsername" value="admin" readonly>
+                                </div>
+                                <div class="info-item">
+                                    <label>Email</label>
+                                    <input type="email" id="profileEmail" value="admin@maasli.com" readonly>
+                                </div>
+                                <div class="info-item">
+                                    <label>Company</label>
+                                    <input type="text" id="profileCompany" value="Maasli Manufacturing">
+                                </div>
+                                <div class="info-item">
+                                    <label>Role</label>
+                                    <input type="text" value="Administrator" readonly>
+                                </div>
+                            </div>
+                            
+                            <button class="save-profile-btn">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Profile View -->
+                
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal for Editing Machine -->
+    <div id="machineModal" class="modal">
+        <div class="modal-content">
+            <h3>Configure Machine</h3>
+            <form id="machineForm">
+                <input type="hidden" id="machineId">
+                <div class="form-group">
+                    <label>Machine Name</label>
+                    <input type="text" id="machineName" required>
+                </div>
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <select id="machineProduct" required>
+                        <option value="">Select a product...</option>
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                    <div class="or-divider">or</div>
+                    <input type="text" id="newProductName" placeholder="Enter new product name">
+                </div>
+                <div class="form-group">
+                    <label>Product Count (Auto-updated from AI)</label>
+                    <input type="number" id="machineCount" min="0" readonly disabled>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="cancel-btn" id="cancelMachineBtn">Cancel</button>
+                    <button type="submit" class="save-btn">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Editing Station -->
+    <div id="stationModal" class="modal">
+        <div class="modal-content">
+            <h3>Configure Station</h3>
+            <form id="stationForm">
+                <input type="hidden" id="stationId">
+                <div class="form-group">
+                    <label>Station Name</label>
+                    <input type="text" id="stationName" required>
+                </div>
+                <div class="form-group">
+                    <label>Number of Employees</label>
+                    <select id="employeeCount" required>
+                        <option value="1">1 Employee</option>
+                        <option value="2">2 Employees</option>
+                    </select>
+                </div>
+                <div id="employeesContainer">
+                    <!-- Employee inputs will be dynamically added -->
+                </div>
+                <p class="info-note">💡 Box counts are automatically updated from the AI model</p>
+                <div class="modal-actions">
+                    <button type="button" class="cancel-btn" id="cancelStationBtn">Cancel</button>
+                    <button type="submit" class="save-btn">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Product Type Modal -->
+    <div class="modal" id="productTypeModal">
+        <div class="modal-content">
+            <h3>Add Product Type</h3>
+            <form id="productTypeForm">
+                <input type="hidden" id="productTypeId">
+                
+                <div class="form-group">
+                    <label>Product Type Name</label>
+                    <input type="text" id="productTypeName" placeholder="e.g., Cookies, Biscuits, Milk" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Description (Optional)</label>
+                    <textarea id="productTypeDescription" rows="3" placeholder="Brief description of this product type"></textarea>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="cancel-btn" onclick="closeProductTypeModal()">Cancel</button>
+                    <button type="submit" class="save-btn">Add Product Type</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-icon" id="toastIcon">✓</div>
+        <div class="toast-content">
+            <div class="toast-title" id="toastTitle">Success</div>
+            <div class="toast-message" id="toastMessage">Operation completed successfully</div>
+        </div>
+    </div>
+
+    <!-- Confirmation Dialog -->
+    <div class="modal" id="confirmDialog">
+        <div class="modal-content confirm-dialog">
+            <div class="confirm-icon">⚠️</div>
+            <h3 id="confirmTitle">Confirm Action</h3>
+            <p id="confirmMessage">Are you sure you want to proceed?</p>
+            <div class="confirm-actions">
+                <button class="cancel-btn" id="confirmCancel">Cancel</button>
+                <button class="delete-btn" id="confirmDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
