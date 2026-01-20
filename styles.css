@@ -395,6 +395,9 @@ body::before {
     cursor: pointer;
     transition: all 0.3s ease;
     padding: 0;
+    z-index: 1001;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 .menu-toggle span {
